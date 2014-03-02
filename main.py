@@ -16,6 +16,7 @@
 #
 import webapp2
 import funcVal
+import esc_html
 
 form="""
 <form method="post">
@@ -51,9 +52,9 @@ class MainHandler(webapp2.RequestHandler):
 
     def write_form(self, error="", month="", day="", year=""):
 		self.response.write(form % {"error": error,
-									"month": month,
-									"day": day,
-									"year": year})
+									"month": esc_html.escape_html(month),
+									"day": esc_html.escape_html(day),
+									"year": esc_html.escape_html(year)})
 
     def post(self):
     	user_month = self.request.get('month')
@@ -67,7 +68,11 @@ class MainHandler(webapp2.RequestHandler):
     	if not (month and day and year):
     		self.write_form("Not valid input!", user_month, user_day, user_year)
     	else:
-    		self.response.write("Thanks for answering")
+    		self.redirect("/thanks")
+
+class ThanksHandler(webapp2.RequestHandler):
+	def get(self):
+		self.response.write("Thanks for answering")
 
     
 
@@ -81,8 +86,7 @@ class MainHandler(webapp2.RequestHandler):
 #         self.response.write(self.request)
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),
-   # ('/testform', TestHandler)
+    ('/', MainHandler), ('/thanks', ThanksHandler)
 ], debug=True)
 
 
