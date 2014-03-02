@@ -14,6 +14,6 @@
 def escape_html(s):
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
 
-print escape_html('kaffe & bajs < kiss > "kaffe" hej>')                                                                                                                                                               
+print escape_html('kaffe & najs < fisk > "kaffe" hej>')                                                                                                                                                               
                                                                                                                                                                
 
