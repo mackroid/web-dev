@@ -5,11 +5,7 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -17,6 +13,7 @@
 import webapp2
 import funcVal
 import esc_html
+import rot13
 
 form="""
 <form method="post">
@@ -42,9 +39,17 @@ form="""
 	<input type="submit">
 </form>
 """
+
+rotForm="""
+<h1>Encrypt your text</h1>
+
+<form method="post">
+	<textarea name="text" style="height: 140px; width: 440px;">%s</textarea>
+	<br>
+	<input type="submit">
+"""	
+
 class MainHandler(webapp2.RequestHandler):
-
-
 
     def get(self):
         self.response.write('Hello, Udacity!')
@@ -70,11 +75,27 @@ class MainHandler(webapp2.RequestHandler):
     	else:
     		self.redirect("/thanks")
 
+
 class ThanksHandler(webapp2.RequestHandler):
+	
 	def get(self):
 		self.response.write("Thanks for answering")
 
-    
+
+class Rot13Handler(webapp2.RequestHandler):
+
+	def get(self):
+		#self.response.write("Encrypt your text")
+		self.response.write(rotForm.replace("%s", ""))
+
+	def write_form(self, text=""):
+		self.response.write(rotForm % text)
+
+	def post(self):
+		user_text = self.request.get('text')
+		user_text = rot13.rot(user_text)
+		#rot13ALGORITHM
+		self.write_form(user_text)
 
 
 # class TestHandler(webapp2.RequestHandler):
@@ -86,7 +107,5 @@ class ThanksHandler(webapp2.RequestHandler):
 #         self.response.write(self.request)
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler), ('/thanks', ThanksHandler)
+    ('/', MainHandler), ('/thanks', ThanksHandler), ('/unit2/rot13', Rot13Handler)
 ], debug=True)
-
-
