@@ -1,3 +1,7 @@
+import re
+USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
+PASS_RE = re.compile(r"^.{3,20}$")
+EMAIL_RE = re.compile(r"^[\S]+@[\S]+\.[\S]+$")
 #functions for validating user input
 
 months = ['January',
@@ -45,3 +49,12 @@ def valid_year(year):
 # print valid_year('1900')
 # print valid_year('1912')
 # print valid_year('2021')
+
+def valid_username(username):
+	return USER_RE.match(username)
+
+def valid_password(password):
+	return PASS_RE.match(password)
+
+def valid_email(email):
+	return EMAIL_RE.match(email)
